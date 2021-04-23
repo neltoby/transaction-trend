@@ -44,7 +44,7 @@ describe('otherUserController', () => {
     await callback(dataAccess.tableCreationAndInsert, dataAccess); 
   })
 
-  test('otherUserController should return 200 with valid user', async () => {
+  test('otherUserController should return 200 with valid user', async done => {
     const res = await otherUserController(useControllerReq({}));
     console.log(res);
     const { 
@@ -56,18 +56,20 @@ describe('otherUserController', () => {
     expect(headers).toHaveProperty('Content-Type');
     expect(body).toBeDefined();
     expect(body).toHaveProperty('status', true);
+    done();
   })
 
-  test('otherUserController should return 200 with invalid user but status false', async () => {
+  test('otherUserController should return 200 with invalid user but status false', async done => {
     const res = await otherUserController(useControllerReq({params: { id: 50000}}));
     const { 
       headers,
       statusCode,
       body
     } = res;
-    expect(statusCode).toBe(200);
+    console.log(res);
+    expect(statusCode).toBe(404);
     expect(headers).toHaveProperty('Content-Type');
-    expect(body).toBeDefined();
-    expect(body).toHaveProperty('status', false);
+    expect(body).toHaveProperty('error', 'User not found');
+    done();
   })
 })

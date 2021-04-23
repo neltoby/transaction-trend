@@ -53,13 +53,21 @@ export default function makeOtherUserCase ({ dataAccess }: {dataAccess: DataAcce
               id,
               transactions
             } = item;
-            return new OtherUsers(
+            const others = new OtherUsers(
               first_name, 
               last_name, 
-              id, avatar, 
+              id, 
+              avatar, 
               created_at, 
               transactions
             );
+            return {
+              name: others.name, 
+              id: others.id,
+              avatar: others.avatar,
+              created_at: others.created_at,
+              transactions: others.transactions,
+            }
           })
           return {
             status: true,
@@ -83,15 +91,17 @@ export default function makeOtherUserCase ({ dataAccess }: {dataAccess: DataAcce
           }
         }
       }else{
-        return {
-          status: false, 
+        throw {
+          status: 'User not found', 
           message: 'User not found',
-          source
+          statusCode: 404,
         }
       }
     }catch(e){
         throw {
-          e
+          status: e.status ? e.status : 'Server error' ,
+          message: e.message ? e.message : 'Server error',
+          statusCode: e.statusCode ? e.statusCode : 500
         }
     }
   }

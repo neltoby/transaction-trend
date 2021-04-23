@@ -9,11 +9,14 @@ export const query = {
   (SELECT date_time FROM transactions WHERE user_id = $3 AND date_time > 
   (select 'now'::timestamp - '7 month'::interval as dateVal))) 
   GROUP BY(u.id, t.category, t.category, t.icon_url)`,
-  findOtherUsers:`SELECT u.id, u.first_name, u.last_name, u.avatar, u.created_at, COUNT(ts.id) AS transactions FROM users AS u JOIN transactions AS ts ON u.id = ts.user_id WHERE u.id != $1 AND
+  findOtherUsers:`SELECT u.id, u.first_name, u.last_name, u.avatar, u.created_at, COUNT(ts.id) 
+  AS transactions FROM users AS u JOIN transactions AS ts ON u.id = ts.user_id WHERE u.id != $1 AND
   ts.date_time > (select 'now'::timestamp - '12 month'::interval as dateValue) 
   AND category IN (SELECT DISTINCT category FROM transactions WHERE user_id = $2 AND 
   date_time IN (SELECT date_time FROM transactions WHERE user_id = $3 
   AND date_time > (select 'now'::timestamp - '7 month'::interval as dateVal)))
   GROUP BY (u.id)`,
   findUserDetails: `SELECT id, first_name, last_name, avatar, created_at FROM users WHERE id = $1`,
+  findAllUser: `SELECT u.id, u.first_name, u.last_name, u.avatar, u.created_at, COUNT(ts.id::INT) AS 
+  transactions FROM users AS u JOIN transactions AS ts ON u.id = ts.user_id GROUP BY (u.id)`
 }

@@ -5,7 +5,7 @@ export default ({ otherUserCase, logger }: { otherUserCase:
   return async function otherUserController (httpRequest: any): Promise<any> {
     try{
       const { headers, params: { id }, ip } = httpRequest;
-      if(!id){
+      if(!id || isNaN(id)){
         throw {
           statusCode: 400,
           status: 'Bad request',

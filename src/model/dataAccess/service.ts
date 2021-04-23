@@ -1,6 +1,6 @@
 import Database from '../db'
 import { IDatabaseConfigAttributes } from '../dbInterface/dbConfig.interface'
-import { ISelectQuery, ICreateTable, IInsertAll } from '../dbInterface/query.interface';
+import { ISelectQuery, IFindAll, ICreateTable, IInsertAll } from '../dbInterface/query.interface';
 
 export default class DataAccess extends Database{
   private _values: Array<any[]> = [[]]
@@ -56,6 +56,17 @@ export default class DataAccess extends Database{
   }
 
   async find(queryObj: ISelectQuery ): Promise<any> {
+    const { name } = queryObj;
+    try{
+      const res = await this.pool.query(queryObj);
+      this.logger.info(`Successfully ran query with name - ${name}.`);
+      return res.rows;
+    }catch(e){
+      this.logger.info(`Failed query - ${name} : ${e}`);
+    }
+  }
+
+  async findAll(queryObj: IFindAll ): Promise<any> {
     const { name } = queryObj;
     try{
       const res = await this.pool.query(queryObj);

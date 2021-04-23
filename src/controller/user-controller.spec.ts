@@ -57,16 +57,16 @@ describe('userController', () => {
     expect(body).toHaveProperty('status', true);
   })
 
-  test('userController should return 200 with invalid user but status false', async () => {
+  test('userController should return 404 with invalid user but status false', async () => {
     const res = await userController(useControllerReq({params: { id: 50000}}));
     const { 
       headers,
       statusCode,
       body
     } = res;
-    expect(statusCode).toBe(200);
+    expect(statusCode).toBe(404);
     expect(headers).toHaveProperty('Content-Type');
     expect(body).toBeDefined();
-    expect(body).toHaveProperty('status', false);
+    expect(body).toHaveProperty('error', 'User not found');
   })
 })

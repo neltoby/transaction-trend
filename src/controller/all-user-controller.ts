@@ -1,24 +1,16 @@
-import { IUsecaseParameter } from '../use-case';
 import LogClass from '../logger/service';
 
-export default function makeUserController (userCase:
-  (req: IUsecaseParameter) => any, logger: LogClass) {
-  return async function userController (httpRequest: {headers: any, params: { id:number }, ip: string}): Promise<any> {
+export default function makeAllUserController (allUserCase:
+  (req: {ip: string, browser: string, referrer?: string} ) => any, logger: LogClass) {
+  return async function allUserController (httpRequest: {headers: any, ip: string}): Promise<any> {
     try{
-      const { headers, params: { id }, ip } = httpRequest;
-      if(!id || isNaN(id)){
-        throw {
-          statusCode: 400,
-          status: 'Bad request',
-          message: 'Unique identifier missing',
-        };
-      }               
+      const { headers, ip } = httpRequest;              
       const source: {ip: string, browser: string, referrer?: string} = {ip, browser: headers['User-Agent']};
       if (headers['Referer']) {
         source.referrer = headers['Referer'];
       }
-      const req = { id, source }
-      const res = await userCase(req);
+      const req = { source }
+      const res = await allUserCase(source);
       return {
         headers: {
           'Content-Type': 'application/json',

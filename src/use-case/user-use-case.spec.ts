@@ -43,7 +43,7 @@ describe('userCase suite', () => {
     );
     await callback(dataAccess.tableCreationAndInsert, dataAccess); 
   })
-  test('user Exist and should return user and transactiona', async () => {
+  test('user Exist and should return user and transactiona', async done => {
     const userTrend = await userCase(useCasereq({}));
     const { 
       status,
@@ -57,18 +57,18 @@ describe('userCase suite', () => {
     expect(data).toHaveProperty('transaction');
     expect(transaction_count).toBeDefined();
     expect(source).toBeDefined();
+    done();
   })
 
-  test('user does not Exist and should return user does not exist', async () => {
-    const userTrend = await userCase(useCasereq({id: 500000}));
-    const { 
-      status,
-      message,
-      source
-    } = userTrend
-    expect(status).toBe(false);
-    expect(message).toBe('User not found');
-    expect(source).toBeDefined();
+  test('user does not Exist and should throw', async () => {
+    expect.assertions(2);
+    try{
+      await userCase(useCasereq({id: 500000}));
+    }catch(e){
+      console.log(e)
+      expect(e).toHaveProperty('message','User not found');
+      expect(e).toHaveProperty('statusCode',404);
+    }
   })
 
 })

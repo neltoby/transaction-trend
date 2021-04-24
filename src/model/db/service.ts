@@ -16,7 +16,7 @@ export default class Database{
 
   constructor(public config: IDatabaseConfigAttributes){
     this.pool = new Pool(this.config)
-    // this.connect();
+    this.connect();
   }
 
   protected async connect() {

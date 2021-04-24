@@ -9,6 +9,7 @@ declare global {
       DB_NAME_TEST: string,
       DB_HOST:string,
       DB_PORT:string,
+      DATABASE_URL: string,
       API_ROOT: string,
       REDIS_HOSTNAME: string,
       REDIS_PORT: string,

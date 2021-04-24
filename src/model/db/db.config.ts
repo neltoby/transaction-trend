@@ -25,11 +25,7 @@ export const databaseConfig: IDatabaseConfig = {
     port,
   },
   production: {
-    user,
-    password,
-    database: process.env.DB_NAME_PRODUCTION,
-    host,
-    port,
+    connectionString: process.env.DB_URL,
   },
 };
 
@@ -40,7 +36,6 @@ export default function databaseConfigObject(): IDatabaseConfigAttributes{
     case PRODUCTION:
       return databaseConfig.production
     default: 
-      console.log(process.env.NODE_ENV, 'value for NOVE_ENV')
       return databaseConfig.test
   } 
 }

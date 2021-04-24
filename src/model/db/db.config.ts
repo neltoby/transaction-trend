@@ -32,10 +32,10 @@ export const databaseConfig: IDatabaseConfig = {
 export default function databaseConfigObject(): IDatabaseConfigAttributes{
   switch(process.env.NODE_ENV) {
     case DEVELOPMENT:
-      return databaseConfig.development
-    case PRODUCTION:
-      return databaseConfig.production
+      return databaseConfig.development;
+    case TEST:
+      return databaseConfig.test;
     default: 
-      return databaseConfig.test
+      return databaseConfig.production;
   } 
 }
